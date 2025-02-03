@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Productos</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        #carrito {
+            position: fixed;
+            top: 0;
+            right: -300px;
+            width: 300px;
+            height: 100%;
+            background-color: white;
+            border-left: 1px solid #ccc;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            transition: right 0.3s ease-in-out;
+            z-index: 1000;
+            overflow-y: auto; /* Permite el scroll vertical */
+        }
+        #carrito.show {
+            right: 0;
+        }
+        #carritoIcono {
+            position: fixed;
+            top: 1rem;
+            right: 1rem;
+            cursor: pointer;
+            z-index: 1001;
+            font-size: 2rem;
+            color: white;
+            transition: color 0.3s ease-in-out;
+        }
+        #carritoIcono.clicked {
+            color: black;
+        }
+    </style>
+</head>
+<body>
+    <header class="bg-gray-800 text-white p-4">
+        <div class="container mx-auto flex flex-col md:flex-row justify-between items-center p-4">
+            <h1 class="text-2xl font-bold mb-4 md:mb-0">Productos</h1>
+            <nav class="flex flex-col md:flex-row items-center space-y-4 md:space-y-0 md:space-x-8">
+                <ul class="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4">
+                    <li><a href="#" class="hover:text-gray-400">Inicio</a></li>
+                    <li><a href="#" class="hover:text-gray-400">Productos</a></li>
+                    <li><a href="#" class="hover:text-gray-400">Contacto</a></li>
+                </ul>
+                <div id="carritoIcono">
+                    <i class="fa-solid fa-cart-shopping"></i>
+                </div>
+                <div id="carrito">
+                    <!-- Contenido del carrito -->
+                </div>
+            </nav>
+        </div>
+    </header>
+    <div id="caja_1"></div>
+    <footer class="bg-gray-800 text-white py-4">
+        <div class="container mx-auto p-4">
+            <p class="text-center">Todos los derechos reservados</p>
+        </div>
+    </footer>
+    <script>
+        document.getElementById('carritoIcono').addEventListener('click', function() {
+            var carrito = document.getElementById('carrito');
+            var icono = document.getElementById('carritoIcono');
+            carrito.classList.toggle('show');
+            icono.classList.toggle('clicked');
+        });
+
+        // Simulación de productos
+        var productos = [
+            { id: 1, nombre: 'Portátil' },
+            { id: 2, nombre: 'Producto 2' },
+            { id: 3, nombre: 'Producto 3' },
+            { id: 4, nombre: 'Producto 4' }
+        ];
+
+        var carrito = {};
+
+        function agregarAlCarrito(productoId) {
+            if (carrito[productoId]) {
+                carrito[productoId].cantidad += 1;
+            } else {
+                var producto = productos.find(p => p.id === productoId);
+                carrito[productoId] = { ...producto, cantidad: 1 };
+            }
+            actualizarCarrito();
+        }
+
+        function actualizarCarrito() {
+            var carritoDiv = document.getElementById('carrito');
+            carritoDiv.innerHTML = '';
+            for (var id in carrito) {
+                var item = carrito[id];
+                var itemDiv = document.createElement('div');
+                itemDiv.textContent = `${item.nombre} - Cantidad: ${item.cantidad}`;
+                carritoDiv.appendChild(itemDiv);
+            }
+        }
+
+        // Ejemplo de agregar productos al carrito
+        agregarAlCarrito(1);
+        agregarAlCarrito(2);
+        agregarAlCarrito(1);
+        agregarAlCarrito(1); // Añadir el mismo producto 3 veces
+    </script>
+    <script src="funcion.js"></script>
+</body>
+</html>
